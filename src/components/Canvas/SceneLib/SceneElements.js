@@ -3,6 +3,8 @@ import {
 	DirectionalLight,
 	AmbientLight,
 	PointLight,
+	PCFShadowMap,
+	WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
@@ -11,12 +13,13 @@ const aspect = window.innerWidth / window.innerHeight,
 	near = 1.0,
 	far = 10000.0,
 	camera = new PerspectiveCamera(fov, aspect, near, far);
+camera.lookAt(0, 0, 0);
 
 export const changeCamPos = newPos => {
-		camera.position.set(-newPos / 4, newPos * 1.5, -newPos);
+		camera.position.set(...newPos);
 	},
 	myCam = pos => {
-		camera.position.set(-pos / 2, pos * 2, -pos / 2);
+		camera.position.set(...pos);
 		return camera;
 	},
 	createLights = () => {
@@ -45,4 +48,14 @@ export const changeCamPos = newPos => {
 		controls.minDistance = 2;
 
 		return controls;
+	},
+	createRenderer = () => {
+		//set up renderer
+		// const renderer = new WebGLRenderer({ antialias: true, alpha: true });
+		const renderer = new WebGLRenderer();
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.type = PCFShadowMap;
+		renderer.setPixelRatio(window.devicePixelRatio);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		return renderer;
 	};

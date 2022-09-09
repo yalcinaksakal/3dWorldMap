@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { NUMBER_OF_CONTENTS_TO_LOAD } from "../config/content";
+import { NUMBER_OF_CONTENTS_TO_LOAD } from "../config/consts";
 
 const initialState = {
 	isLoading: true,

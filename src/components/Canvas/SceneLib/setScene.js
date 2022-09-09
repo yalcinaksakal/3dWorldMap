@@ -1,14 +1,18 @@
 import { Color, Scene } from "three";
+import createTerrainWithColors from "../3dLib/createTerrain";
 import {
 	myCam,
 	createLights,
 	setOrbitControls,
 	createRenderer,
 } from "./SceneElements";
+import getHeightMap from "../3dLib/heightMap";
+import getColors from "../3dLib/colors";
 
 const setScene = () => {
+	let renderRequested;
 	const renderer = createRenderer(),
-		camera = myCam(1250),
+		camera = myCam([0, 500, 0]),
 		scene = new Scene(),
 		lights = createLights(),
 		{ domElement } = renderer,
@@ -30,13 +34,17 @@ const setScene = () => {
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			requestRenderIfNotRequested();
 		};
-	let renderRequested;
 
-	scene.background = new Color("#748B97");
+	scene.background = new Color("black");
 	scene.add(...lights);
 	controls.addEventListener("change", requestRenderIfNotRequested);
 
-	render();
+	getColors().then(props => {
+		getHeightMap().then(map => {
+			scene.add(createTerrainWithColors(...props, map));
+			render();
+		});
+	});
 
 	return {
 		domElement,
