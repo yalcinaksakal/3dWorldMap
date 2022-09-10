@@ -4,7 +4,7 @@ const getHeightMap = async () => {
 		image = new Image(),
 		map = [];
 
-	image.src = "images/5.png";
+	image.src = "images/2560x1280Gray.png";
 	await image.decode();
 	const width = image.width,
 		height = image.height;
@@ -17,7 +17,7 @@ const getHeightMap = async () => {
 		map[i] = [];
 		for (let j = 0; j <= width; j++) {
 			const { data } = ctx.getImageData(j, i, 1, 1);
-			map[i].push(data[0] + data[1] + data[2]);
+			map[i].push((data[0] + data[1] + data[2]) / 20);
 		}
 	}
 

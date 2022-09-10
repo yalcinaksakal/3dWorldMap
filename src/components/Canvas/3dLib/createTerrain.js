@@ -2,8 +2,8 @@ import {
 	InstancedMesh,
 	Object3D,
 	MeshBasicMaterial,
-	BoxGeometry,
 	Color,
+	PlaneGeometry,
 } from "three";
 
 const createTerrainWithColors = (
@@ -13,12 +13,12 @@ const createTerrainWithColors = (
 	heightMap,
 	startPos = [0, 0]
 ) => {
-	const boxGeometry = new BoxGeometry(1, 1, 1),
-		boxMaterial = new MeshBasicMaterial(),
+	const planeGeo = new PlaneGeometry(1, 1),
+		planeMaterial = new MeshBasicMaterial(),
 		countOfobjects = width * height,
 		terrain = new InstancedMesh(
-			boxGeometry.clone(),
-			boxMaterial.clone(),
+			planeGeo.clone(),
+			planeMaterial.clone(),
 			countOfobjects
 		),
 		positionHelper = new Object3D(),
@@ -27,8 +27,11 @@ const createTerrainWithColors = (
 			for (let i = 0; i < countOfobjects; i++) {
 				x = i % width;
 				y = Math.floor(i / width);
-				positionHelper.position.set(x - width / 2, 0, y - height / 2);
-				positionHelper.scale.set(1, heightMap[y][x], 1);
+				positionHelper.position.set(
+					x - width / 2,
+					heightMap[y][x] / 2,
+					y - height / 2
+				);
 				positionHelper.updateMatrix();
 				instancedMesh.setColorAt(
 					i,
@@ -37,7 +40,8 @@ const createTerrainWithColors = (
 				instancedMesh.setMatrixAt(i, positionHelper.matrix);
 			}
 		};
-
+	positionHelper.rotateY(-Math.PI);
+	positionHelper.rotateX(-Math.PI / 2);
 	setPositions(terrain);
 	terrain.instanceMatrix.needsUpdate = true;
 	terrain.instanceColor.needsUpdate = true;
