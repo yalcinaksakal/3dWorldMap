@@ -13,15 +13,15 @@ const getHeightMap = async () => {
 	canvas.height = height;
 	ctx.drawImage(image, 0, 0);
 
-	for (let i = 0; i <= height; i++) {
+	for (let i = 0; i < height; i++) {
 		map[i] = [];
-		for (let j = 0; j <= width; j++) {
-			const { data } = ctx.getImageData(j, i, 1, 1);
-			map[i].push((data[0] + data[1] + data[2]) / 20);
+		for (let j = 0; j < width; j++) {
+			const { data } = ctx.getImageData(j, height - i, 1, 1);
+			map[i].push((data[0] + data[1] + data[2]) / 5);
 		}
 	}
 
-	return map;
+	return [map, width, height];
 };
 
 export default getHeightMap;

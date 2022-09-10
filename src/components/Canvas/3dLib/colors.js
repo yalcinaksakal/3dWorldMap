@@ -4,7 +4,7 @@ const getColors = async () => {
 		image = new Image(),
 		colors = [];
 
-	image.src = "images/2560x1280.png";
+	image.src = "images/6.png";
 	await image.decode();
 	const width = image.width,
 		height = image.height;

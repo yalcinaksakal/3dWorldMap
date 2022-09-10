@@ -1,5 +1,5 @@
 import { Color, Scene } from "three";
-import createTerrainWithColors from "../3dLib/createTerrain";
+import createTerrain from "../3dLib/createTerrain";
 import {
 	myCam,
 	createLights,
@@ -7,7 +7,6 @@ import {
 	createRenderer,
 } from "./SceneElements";
 import getHeightMap from "../3dLib/heightMap";
-import getColors from "../3dLib/colors";
 
 const setScene = () => {
 	let renderRequested;
@@ -39,9 +38,16 @@ const setScene = () => {
 	scene.add(...lights);
 	controls.addEventListener("change", requestRenderIfNotRequested);
 
-	getColors().then(props => {
-		getHeightMap().then(map => {
-			scene.add(createTerrainWithColors(...props, map));
+	// getColors().then(props => {
+	// 	getHeightMap().then(map => {
+	// 		scene.add(createTerrainWithColors(...props, map));
+	// 		render();
+	// 	});
+	// });
+
+	getHeightMap().then(props => {
+		createTerrain(...props).then(terrain => {
+			scene.add(terrain);
 			render();
 		});
 	});

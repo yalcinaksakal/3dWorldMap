@@ -38,8 +38,7 @@ const createTerrainWithColors = (
 				instancedMesh.setMatrixAt(i, positionHelper.matrix);
 			}
 		};
-	positionHelper.rotateY(-Math.PI);
-	positionHelper.rotateX(-Math.PI / 2);
+
 	setPositions(terrain);
 	terrain.instanceMatrix.needsUpdate = true;
 	terrain.instanceColor.needsUpdate = true;
