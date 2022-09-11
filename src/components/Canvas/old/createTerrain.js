@@ -5,37 +5,43 @@ import {
 	Mesh,
 	DoubleSide,
 	TextureLoader,
+	FrontSide,
+	BackSide,
 } from "three";
 
-const createTerrain = coords => {
+const createTerrain = async (heightMap, width, height) => {
 	const textureloader = new TextureLoader(),
-		dimension = Math.floor(coords.length ** 0.5),
 		// texture = await textureloader.load("images/Elle_0_0.tif"),
+		material = new MeshBasicMaterial({
+			// map: texture,
+			wireframe: false,
+			side: DoubleSide,
+		}),
 		terrain = new Mesh(
-			new PlaneGeometry(dimension * 50, dimension * 50, dimension, dimension),
-			new MeshBasicMaterial({
-				// map: texture,
-				wireframe: false,
-				side: DoubleSide,
-				color: "gray",
-				transparent: true,
-				opacity: 0.5,
-			})
+			new PlaneGeometry(width - 1, height - 1, 256, 256),
+			material
 		),
 		posArr = terrain.geometry.attributes.position.array;
 
 	terrain.castShadow = true;
 	terrain.receiveShadow = true;
 	terrain.rotateX(-Math.PI / 2);
+
 	// terrain.material.side = DoubleSide;
 	terrain.position.set(0, 0, 0);
-	console.log(coords, posArr.length, dimension);
-	let j = 0;
+	console.log(heightMap, width, height);
+	let x, y;
 	for (let i = 0; i < posArr.length; i += 3) {
-		// posArr[i] = coords[j][0];
-		// posArr[j] = coords[j][1];
-		posArr[i + 2] = coords[j++][2];
-		if (j >= coords.length) break;
+		x =
+			(posArr[i] < 0 ? Math.ceil(posArr[i]) : Math.floor(posArr[i])) +
+			width / 2;
+		y =
+			(posArr[i + 1] < 0
+				? Math.ceil(posArr[i + 1])
+				: Math.floor(posArr[i + 1])) +
+			height / 2;
+
+		posArr[i + 2] = heightMap[y][x];
 	}
 	terrain.geometry.attributes.position.needsUpdate = true;
 	return terrain;

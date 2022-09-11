@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import loadingReducer from "./loading-slice";
+import cordReducer from "./coord-slice";
 
 const store = configureStore({
-  reducer: {
-    loading: loadingReducer,
-  },
+	reducer: {
+		coords: cordReducer,
+	},
 });
 
 export default store;

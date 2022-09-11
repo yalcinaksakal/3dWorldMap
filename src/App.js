@@ -1,11 +1,13 @@
+import { useSelector } from "react-redux";
 import styles from "./App.module.css";
 import Canvas from "./components/Canvas/Canvas";
+import DataFromFile from "./components/FileReader/FilerReader";
 
 function App() {
+	const { isData } = useSelector(store => store.coords);
+
 	return (
-		<div className={styles.home}>
-			<Canvas />
-		</div>
+		<div className={styles.home}>{isData ? <Canvas /> : <DataFromFile />}</div>
 	);
 }
 

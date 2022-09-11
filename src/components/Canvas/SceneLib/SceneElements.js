@@ -9,9 +9,9 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const aspect = window.innerWidth / window.innerHeight,
-	fov = 60,
+	fov = 70,
 	near = 1.0,
-	far = 10000.0,
+	far = 100000.0,
 	camera = new PerspectiveCamera(fov, aspect, near, far);
 camera.lookAt(0, 0, 0);
 

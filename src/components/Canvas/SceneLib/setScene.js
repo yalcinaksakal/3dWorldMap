@@ -6,9 +6,8 @@ import {
 	setOrbitControls,
 	createRenderer,
 } from "./SceneElements";
-import getHeightMap from "../3dLib/heightMap";
 
-const setScene = () => {
+const setScene = coords => {
 	let renderRequested;
 	const renderer = createRenderer(),
 		camera = myCam([0, 500, 0]),
@@ -38,19 +37,8 @@ const setScene = () => {
 	scene.add(...lights);
 	controls.addEventListener("change", requestRenderIfNotRequested);
 
-	// getColors().then(props => {
-	// 	getHeightMap().then(map => {
-	// 		scene.add(createTerrainWithColors(...props, map));
-	// 		render();
-	// 	});
-	// });
-
-	getHeightMap().then(props => {
-		createTerrain(...props).then(terrain => {
-			scene.add(terrain);
-			render();
-		});
-	});
+	scene.add(createTerrain(coords));
+	render();
 
 	return {
 		domElement,
