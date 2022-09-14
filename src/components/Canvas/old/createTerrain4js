@@ -8,36 +8,43 @@ import {
 } from "three";
 
 const createTerrain = coords => {
-	const // textureloader = new TextureLoader(),
-		// 	dimension = Math.ceil(coords.length ** 0.5),
+	const textureloader = new TextureLoader(),
+		dimension = Math.floor(coords.length ** 0.5),
 		// texture = await textureloader.load("images/Elle_0_0.tif"),
 		terrain = new Mesh(
-			new PlaneGeometry(201, 201, 199, 199),
+			new PlaneGeometry(dimension * 10, dimension * 10, dimension, dimension),
 			new MeshBasicMaterial({
 				// map: texture,
 				wireframe: false,
 				side: DoubleSide,
-				// color: "gray",
 				transparent: true,
 				opacity: 0.5,
+				vertexColors: true,
 			})
 		),
 		colors = [],
 		posArr = terrain.geometry.attributes.position.array;
+
 	terrain.castShadow = true;
 	terrain.receiveShadow = true;
 	terrain.rotateX(-Math.PI / 2);
 	terrain.position.set(0, 0, 0);
-
-	for (let i = 0; i < coords.length - 1; i++) {
-		posArr[i * 3 + 2] = coords[i][2] / 50;
-		colors.push(Math.random() * 255, Math.random() * 255, Math.random() * 255);
+	console.log(coords, posArr.length, dimension);
+	let j = 0;
+	for (let i = 0; i < posArr.length; i += 3) {
+		if (coords[j][2] !== undefined) {
+			posArr[i + 2] = coords[j++][2];
+			colors.push(
+				Math.random() * 255,
+				Math.random() * 255,
+				Math.random() * 255
+			);
+		}
+		if (j >= coords.length) break;
 	}
-
+	// terrain.geometry.attributes.position.needsUpdate = true;
 	terrain.geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
-	terrain.geometry.attributes.position.needsUpdate = true;
-	terrain.geometry.attributes.color.needsUpdate = true;
-	console.log(terrain.geometry.attributes);
+	terrain.geometry.attributes.needsUpdate = true;
 	return terrain;
 };
 

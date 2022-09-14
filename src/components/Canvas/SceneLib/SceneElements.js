@@ -35,7 +35,8 @@ export const changeCamPos = newPos => {
 		pointLight.shadow.camera.near = 0.5; // default
 		pointLight.shadow.camera.far = 5000; // default
 
-		return [directionalLight, new AmbientLight("white", 0.2), pointLight];
+		// return [directionalLight, new AmbientLight("white", 0.2), pointLight];
+		return [pointLight];
 	},
 	setOrbitControls = (cam, el) => {
 		const controls = new OrbitControls(cam, el);

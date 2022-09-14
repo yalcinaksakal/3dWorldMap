@@ -9,7 +9,9 @@ function DataFromFile() {
 		dispatch = useDispatch(),
 		handleOnChange = e => setFile(e.target.files[0]),
 		extractData = text => {
-			const data = text.split(/\r?\n/).map(row => row.split(" ").map(d => +d));
+			const data = text
+				.split(/\r?\n/)
+				.map(row => row.split(" ").map(d => (isNaN(d) || !d ? 0 : +d)));
 			dispatch(coordActions.setData(data));
 		},
 		handleOnSubmit = e => {
