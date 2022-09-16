@@ -12,6 +12,7 @@ function DataFromFile() {
 			const data = text
 				.split(/\r?\n/)
 				.map(row => row.split(" ").map(d => (isNaN(d) || !d ? 0 : +d)));
+			data.pop();
 			dispatch(coordActions.setData(data));
 		},
 		handleOnSubmit = e => {

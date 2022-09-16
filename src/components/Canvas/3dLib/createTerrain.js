@@ -1,43 +1,27 @@
-import {
-	MeshBasicMaterial,
-	PlaneGeometry,
-	Mesh,
-	DoubleSide,
-	TextureLoader,
-	Float32BufferAttribute,
-} from "three";
+import { PlaneGeometry, Mesh, ShaderMaterial } from "three";
+import { _FS } from "../shaders/_FS";
+import { _VS } from "../shaders/_VS";
 
 const createTerrain = coords => {
-	const // textureloader = new TextureLoader(),
-		// 	dimension = Math.ceil(coords.length ** 0.5),
-		// texture = await textureloader.load("images/Elle_0_0.tif"),
-		terrain = new Mesh(
-			new PlaneGeometry(201, 201, 199, 199),
-			new MeshBasicMaterial({
-				// map: texture,
-				wireframe: false,
-				side: DoubleSide,
-				// color: "gray",
-				transparent: true,
-				opacity: 0.5,
-			})
-		),
-		colors = [],
-		posArr = terrain.geometry.attributes.position.array;
+	const geometry = new PlaneGeometry(200, 200, 199, 199),
+		material = new ShaderMaterial({
+			uniforms: {
+				heights: {
+					value: coords.map(coord => coord[2]),
+				},
+			},
+			vertexShader: _VS,
+			fragmentShader: _FS,
+			transparent: true,
+			opacity: 0.4,
+		}),
+		terrain = new Mesh(geometry, material);
+
 	terrain.castShadow = true;
 	terrain.receiveShadow = true;
 	terrain.rotateX(-Math.PI / 2);
 	terrain.position.set(0, 0, 0);
-
-	for (let i = 0; i < coords.length - 1; i++) {
-		posArr[i * 3 + 2] = coords[i][2] / 50;
-		colors.push(Math.random() * 255, Math.random() * 255, Math.random() * 255);
-	}
-
-	terrain.geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
-	terrain.geometry.attributes.position.needsUpdate = true;
-	terrain.geometry.attributes.color.needsUpdate = true;
-	console.log(terrain.geometry.attributes);
+	console.log(material);
 	return terrain;
 };
 

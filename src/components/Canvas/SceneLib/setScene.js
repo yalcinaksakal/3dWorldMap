@@ -12,7 +12,6 @@ const setScene = coords => {
 	const renderer = createRenderer(),
 		camera = myCam([0, 500, 0]),
 		scene = new Scene(),
-		lights = createLights(),
 		{ domElement } = renderer,
 		controls = setOrbitControls(camera, domElement),
 		render = () => {
@@ -33,8 +32,10 @@ const setScene = coords => {
 			requestRenderIfNotRequested();
 		};
 
+	// scene.background = new Color(0x87ceeb);
 	scene.background = new Color("black");
-	scene.add(...lights);
+
+	scene.add(...createLights());
 	controls.addEventListener("change", requestRenderIfNotRequested);
 
 	scene.add(createTerrain(coords));

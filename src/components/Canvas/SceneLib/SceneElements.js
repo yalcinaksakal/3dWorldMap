@@ -8,23 +8,19 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-const aspect = window.innerWidth / window.innerHeight,
-	fov = 70,
-	near = 1.0,
-	far = 100000.0,
-	camera = new PerspectiveCamera(fov, aspect, near, far);
-camera.lookAt(0, 0, 0);
-
-export const changeCamPos = newPos => {
-		camera.position.set(...newPos);
-	},
-	myCam = pos => {
+export const myCam = pos => {
+		const aspect = window.innerWidth / window.innerHeight,
+			fov = 70,
+			near = 0.1,
+			far = 10000.0,
+			camera = new PerspectiveCamera(fov, aspect, near, far);
+		camera.lookAt(0, 0, 0);
 		camera.position.set(...pos);
 		return camera;
 	},
 	createLights = () => {
-		const directionalLight = new DirectionalLight("white", 0.8),
-			pointLight = new PointLight("white", 0.2);
+		const directionalLight = new DirectionalLight("red", 0.8),
+			pointLight = new PointLight("blue", 1);
 		directionalLight.position.set(-500, 500, -500);
 		directionalLight.target.position.set(0, 0, 0);
 
@@ -35,8 +31,8 @@ export const changeCamPos = newPos => {
 		pointLight.shadow.camera.near = 0.5; // default
 		pointLight.shadow.camera.far = 5000; // default
 
-		// return [directionalLight, new AmbientLight("white", 0.2), pointLight];
-		return [pointLight];
+		return [directionalLight, new AmbientLight("white", 0.2), pointLight];
+		// return [];
 	},
 	setOrbitControls = (cam, el) => {
 		const controls = new OrbitControls(cam, el);
@@ -53,7 +49,7 @@ export const changeCamPos = newPos => {
 	createRenderer = () => {
 		//set up renderer
 		// const renderer = new WebGLRenderer({ antialias: true, alpha: true });
-		const renderer = new WebGLRenderer();
+		const renderer = new WebGLRenderer({ antialias: true });
 		renderer.shadowMap.enabled = true;
 		renderer.shadowMap.type = PCFShadowMap;
 		renderer.setPixelRatio(window.devicePixelRatio);
