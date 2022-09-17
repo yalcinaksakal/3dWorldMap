@@ -38,9 +38,12 @@ const setScene = coords => {
 	scene.add(...createLights());
 	controls.addEventListener("change", requestRenderIfNotRequested);
 
+	// createTerrain(coords).then(terrain => {
+	// 	scene.add(terrain);
+	// 	requestRenderIfNotRequested();
+	// });
 	scene.add(createTerrain(coords));
-	render();
-
+	requestRenderIfNotRequested();
 	return {
 		domElement,
 		onResize,
