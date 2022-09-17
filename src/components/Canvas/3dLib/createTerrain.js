@@ -5,20 +5,21 @@ import {
 	MeshBasicMaterial,
 	BufferAttribute,
 } from "three";
+import getColor from "./getColor";
 
 const createTerrain = coords => {
-	const geometry = new PlaneGeometry(201, 201, 199, 199),
+	const geometry = new PlaneGeometry(225, 225, 224, 224),
 		material = new MeshBasicMaterial({
 			side: DoubleSide,
-			transparent: true,
-			opacity: 0.9,
 			vertexColors: true,
+			transparent: true,
+			opacity: 1,
 		}),
 		posArr = geometry.attributes.position.array,
 		colors = [];
 	for (let i = 0; i < coords.length; i++) {
-		posArr[i * 3 + 2] = coords[i][2] / 50;
-		colors.push(Math.random(), Math.random(), Math.random());
+		posArr[i * 3 + 2] = coords[i][2] / 150;
+		colors.push(...getColor(coords[i][2]));
 	}
 	geometry.setAttribute(
 		"color",
@@ -26,11 +27,8 @@ const createTerrain = coords => {
 	);
 
 	const terrain = new Mesh(geometry, material);
-	terrain.castShadow = true;
-	terrain.receiveShadow = true;
 	terrain.rotateX(-Math.PI / 2);
 	terrain.position.set(0, 0, 0);
-
 	return terrain;
 };
 

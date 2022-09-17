@@ -44,6 +44,7 @@ const setScene = coords => {
 	// });
 	scene.add(createTerrain(coords));
 	requestRenderIfNotRequested();
+
 	return {
 		domElement,
 		onResize,
