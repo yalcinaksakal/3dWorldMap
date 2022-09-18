@@ -8,7 +8,7 @@ void main()
 {
       vec4 bumpData = texture2D( bumpTexture, uv );
       
-      height = bumpData.b;
+      height = bumpData.r+bumpData.g+bumpData.b;
 
       if (height>0.0) height=10.0;
 

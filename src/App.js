@@ -6,9 +6,10 @@ import DataFromFile from "./components/FileReader/FilerReader";
 function App() {
 	const { isData } = useSelector(store => store.coords);
 
-	return (
-		<div className={styles.home}>{isData ? <Canvas /> : <DataFromFile />}</div>
-	);
+	return <Canvas />;
+	// return (
+	// 	<div className={styles.home}>{isData ? <Canvas /> : <DataFromFile />}</div>
+	// );
 }
 
 export default App;
