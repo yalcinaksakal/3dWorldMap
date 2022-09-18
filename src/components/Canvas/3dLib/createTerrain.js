@@ -1,25 +1,32 @@
-import { PlaneGeometry, Mesh, ShaderMaterial, TextureLoader } from "three";
-import { _FS } from "../shaders/_FS";
-import { _VS } from "../shaders/_VS";
+import {
+	PlaneGeometry,
+	Mesh,
+	DoubleSide,
+	MeshBasicMaterial,
+	BufferAttribute,
+} from "three";
+import getColor from "./getColor";
 
-const createTerrain = async () => {
-	const textureLoader = new TextureLoader(),
-		bumpTexture = await textureLoader.load("map.png"),
-		geometry = new PlaneGeometry(600, 600, 1024, 1024),
-		material = new ShaderMaterial({
-			uniforms: {
-				bumpTexture: {
-					value: bumpTexture,
-				},
-				scale: { value: 3 },
-			},
-			vertexShader: _VS,
-			fragmentShader: _FS,
-			transparent: true,
-			opacity: 0.8,
+const createTerrain = coords => {
+	const geometry = new PlaneGeometry(225, 225, 224, 224),
+		material = new MeshBasicMaterial({
+			side: DoubleSide,
+			vertexColors: true,
+			// transparent: true,
+			// opacity: 0.5,
 		}),
-		terrain = new Mesh(geometry, material);
-	console.log(bumpTexture);
+		posArr = geometry.attributes.position.array,
+		colors = [];
+	for (let i = 0; i < coords.length; i++) {
+		posArr[i * 3 + 2] = coords[i][2] / 10;
+		colors.push(...getColor(coords[i][2]));
+	}
+	geometry.setAttribute(
+		"color",
+		new BufferAttribute(new Float32Array(colors), 3)
+	);
+
+	const terrain = new Mesh(geometry, material);
 	terrain.rotateX(-Math.PI / 2);
 	terrain.position.set(0, 0, 0);
 	return terrain;

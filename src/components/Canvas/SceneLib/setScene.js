@@ -38,12 +38,12 @@ const setScene = coords => {
 	scene.add(...createLights());
 	controls.addEventListener("change", requestRenderIfNotRequested);
 
-	createTerrain().then(terrain => {
-		scene.add(terrain);
-		requestRenderIfNotRequested();
-	});
-	// scene.add(createTerrain(coords));
-	// requestRenderIfNotRequested();
+	// createTerrain().then(terrain => {
+	// 	scene.add(terrain);
+	// 	requestRenderIfNotRequested();
+	// });
+	scene.add(createTerrain(coords));
+	requestRenderIfNotRequested();
 
 	return {
 		domElement,
